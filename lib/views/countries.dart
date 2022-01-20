@@ -139,6 +139,26 @@ class Countries extends StatelessWidget {
                           value.countriesList![index].flags.png,
                           height: ScreenUtil().setHeight(100),
                           width: ScreenUtil().setHeight(100),
+                          loadingBuilder: (BuildContext context, Widget child,
+                              ImageChunkEvent? loadingProgress) {
+                            if (loadingProgress == null) {
+                              return child;
+                            }
+                            return Container(
+                              width: ScreenUtil().setHeight(100),
+                              height: ScreenUtil().setHeight(100),
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.grey,
+                                  value: loadingProgress.expectedTotalBytes !=
+                                          null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes!
+                                      : null,
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       )
                     ],

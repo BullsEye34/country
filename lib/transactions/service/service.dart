@@ -9,6 +9,7 @@ class Service {
     var url = EndPoints.baseURL;
     return await client
         .get(Uri.parse(url + "/region/" + region + "?fields=name,flags"))
-        .timeout(Duration(seconds: timeoutTime));
+        .timeout(Duration(seconds: timeoutTime))
+        .onError((error, stackTrace) => Future(() => throw error!));
   }
 }
