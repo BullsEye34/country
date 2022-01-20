@@ -79,11 +79,13 @@ class States extends ChangeNotifier {
 
   void clearDataCountries() {
     countriesList = null;
+    countryList["data"] = [];
     notifyListeners();
   }
 
   void clearSearchData() {
     countryDataList = null;
+    countryList["data"] = [];
     notifyListeners();
   }
 

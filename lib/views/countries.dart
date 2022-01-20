@@ -128,7 +128,7 @@ class Countries extends StatelessWidget {
 
   Consumer<States> listOfCountries(search) {
     return Consumer<States>(
-      builder: (context, value, child) => (value.countryList["data"] == null)
+      builder: (context, value, child) => (value.countryList["data"].isEmpty)
           ? const Center(
               child: CupertinoActivityIndicator(),
             )
