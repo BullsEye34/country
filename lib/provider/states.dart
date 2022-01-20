@@ -6,12 +6,12 @@ import 'package:flutter/cupertino.dart';
 
 class States extends ChangeNotifier {
   CountriesModel? _countriesModel;
-  List<CountriesModel>? _list;
+  List<CountriesModel>? countriesList;
   void getCountriedByRegion(String region) {
     Service.getCountriesByRegion(region).then((response) {
       var o = response;
       o = o.body.toString();
-      _list = List<CountriesModel>.from(
+      countriesList = List<CountriesModel>.from(
           json.decode(o).map((model) => CountriesModel.fromMap(model)));
       notifyListeners();
     });
