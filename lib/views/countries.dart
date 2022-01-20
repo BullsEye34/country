@@ -18,6 +18,13 @@ class Countries extends StatelessWidget {
     provider.getCountriedByRegion(title!);
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new),
+          onPressed: () {
+            provider.clearDataCountries();
+            Navigator.pop(context);
+          },
+        ),
         title: Text(
           title.toString(),
           style: TextStyle(
@@ -30,7 +37,7 @@ class Countries extends StatelessWidget {
       ),
       body: Container(
         margin: EdgeInsets.symmetric(
-          horizontal: ScreenUtil().setWidth(100),
+          horizontal: ScreenUtil().setWidth(80),
         ),
         child: ListView(
           children: [
@@ -38,17 +45,20 @@ class Countries extends StatelessWidget {
             Row(
               children: [
                 GestureDetector(
-                  onTap: () => Navigator.pop(context),
+                  onTap: () {
+                    provider.clearDataCountries();
+                    Navigator.pop(context);
+                  },
                   child: Text(
                     title.toString(),
                     style: TextStyle(
-                      fontSize: ScreenUtil().setSp(75),
+                      fontSize: ScreenUtil().setSp(60),
                       color: Colors.grey,
                     ),
                   ),
                 ),
                 SizedBox(
-                  width: ScreenUtil().setWidth(50),
+                  width: ScreenUtil().setWidth(20),
                 ),
                 Icon(
                   Icons.arrow_forward_ios,
@@ -56,7 +66,7 @@ class Countries extends StatelessWidget {
                   size: ScreenUtil().setSp(50),
                 ),
                 SizedBox(
-                  width: ScreenUtil().setWidth(50),
+                  width: ScreenUtil().setWidth(20),
                 ),
                 Text(
                   "Countries",
@@ -90,8 +100,9 @@ class Countries extends StatelessWidget {
               child: CupertinoActivityIndicator(),
             )
           : Container(
-              height: ScreenUtil().setHeight(1800),
+              height: ScreenUtil().setHeight(1100),
               child: ListView.builder(
+                physics: BouncingScrollPhysics(),
                 itemBuilder: (context, index) => Container(
                   margin: EdgeInsets.symmetric(
                     vertical: ScreenUtil().setHeight(20),
@@ -109,6 +120,7 @@ class Countries extends StatelessWidget {
                       ListTile(
                         title: Text(
                           value.countriesList![index].name.official,
+                          maxLines: 2,
                           style: TextStyle(
                             fontSize: ScreenUtil().setSp(45),
                             color: Constants.tileColor,
@@ -117,10 +129,16 @@ class Countries extends StatelessWidget {
                         subtitle: Text(
                           "Commonly: " +
                               value.countriesList![index].name.common,
+                          maxLines: 1,
                           style: TextStyle(
                             fontSize: ScreenUtil().setSp(35),
                             color: Constants.tileColor,
                           ),
+                        ),
+                        leading: Image.network(
+                          value.countriesList![index].flags.png,
+                          height: ScreenUtil().setHeight(100),
+                          width: ScreenUtil().setHeight(100),
                         ),
                       )
                     ],

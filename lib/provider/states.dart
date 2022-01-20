@@ -16,4 +16,9 @@ class States extends ChangeNotifier {
       notifyListeners();
     });
   }
+
+  void clearDataCountries() {
+    countriesList = null;
+    notifyListeners();
+  }
 }

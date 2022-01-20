@@ -13,7 +13,7 @@ class Regions extends StatelessWidget {
       body: Center(
         child: Container(
           padding: EdgeInsets.symmetric(
-            horizontal: ScreenUtil().setWidth(100),
+            horizontal: ScreenUtil().setWidth(80),
             //vertical: ScreenUtil().setHeight(100),
           ),
           height: ScreenUtil().setHeight(1900),
