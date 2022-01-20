@@ -8,7 +8,7 @@ class Service {
   static Future getCountriesByRegion(region) async {
     var url = EndPoints.baseURL;
     return await client
-        .get(Uri.parse(url + "/region/" + region))
+        .get(Uri.parse(url + "/region/" + region + "?fields=name,flags"))
         .timeout(Duration(seconds: timeoutTime));
   }
 }
