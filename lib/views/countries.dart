@@ -137,7 +137,14 @@ class Countries extends StatelessWidget {
               ? Center(
                   child: Column(
                     children: [
-                      Text("No Internet Connection.\nFetching from Cache"),
+                      Text(
+                        "No Internet Connection.\n\nFetching last region's data from Cache",
+                        style: TextStyle(
+                          fontSize: ScreenUtil().setSp(45),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      size50(),
                       SizedBox(
                         height: ScreenUtil().setHeight(1100),
                         child: ListView.builder(
