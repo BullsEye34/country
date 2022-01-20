@@ -12,4 +12,15 @@ class Service {
         .timeout(Duration(seconds: timeoutTime))
         .onError((error, stackTrace) => Future(() => throw error!));
   }
+
+  static Future getDataByCountry(country) async {
+    var url = EndPoints.baseURL;
+    return await client
+        .get(Uri.parse(url +
+            "/name/" +
+            country +
+            "?fields=name,flags,currencies,capital,population,cca2,demonyms"))
+        .timeout(Duration(seconds: timeoutTime))
+        .onError((error, stackTrace) => Future(() => throw error!));
+  }
 }
