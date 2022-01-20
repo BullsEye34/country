@@ -1,5 +1,5 @@
-import 'package:digitaltrons/provider/states.dart';
-import 'package:digitaltrons/views/regions.dart';
+import 'package:country/provider/states.dart';
+import 'package:country/views/regions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

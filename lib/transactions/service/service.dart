@@ -1,4 +1,4 @@
-import 'package:digitaltrons/transactions/endpoints/endpoints.dart';
+import 'package:country/transactions/endpoints/endpoints.dart';
 import 'package:http/http.dart' as http;
 
 class Service {

@@ -1,6 +1,6 @@
 {
-    "name": "digitaltrons",
-    "short_name": "digitaltrons",
+    "name": "country",
+    "short_name": "country",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

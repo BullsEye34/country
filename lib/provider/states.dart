@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:digitaltrons/transactions/models/countriesModel.dart';
-import 'package:digitaltrons/transactions/models/countryDataModel.dart';
-import 'package:digitaltrons/transactions/service/service.dart';
+import 'package:country/transactions/models/countriesModel.dart';
+import 'package:country/transactions/models/countryDataModel.dart';
+import 'package:country/transactions/service/service.dart';
 import 'package:flutter/cupertino.dart';
 
 class States extends ChangeNotifier {
