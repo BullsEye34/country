@@ -1,5 +1,7 @@
 import 'package:digitaltrons/constants.dart';
+import 'package:digitaltrons/provider/states.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Countries extends StatelessWidget {
   //const Countries({Key? key}) : super(key: key);
@@ -10,6 +12,8 @@ class Countries extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    States provider = Provider.of<States>(context, listen: false);
+    provider.getCountriedByRegion(title!);
     return Scaffold(
       appBar: AppBar(
         title: Text(
