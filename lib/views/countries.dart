@@ -135,7 +135,101 @@ class Countries extends StatelessWidget {
           : (value.countryList["error"] == true &&
                   value.countryList["errorMessage"] == "502")
               ? Center(
-                  child: Text("No Internet Connection!"),
+                  child: Column(
+                    children: [
+                      Text("No Internet Connection.\nFetching from Cache"),
+                      SizedBox(
+                        height: ScreenUtil().setHeight(1100),
+                        child: ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) => GestureDetector(
+                            onTap: () => Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => Data(
+                                  value.countryList["data"]![index].name
+                                      .official,
+                                  color,
+                                ),
+                              ),
+                            ),
+                            child: Container(
+                              margin: EdgeInsets.symmetric(
+                                vertical: ScreenUtil().setHeight(20),
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: ScreenUtil().setHeight(20),
+                              ),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: color),
+                              height: ScreenUtil().setHeight(200),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ListTile(
+                                    title: Text(
+                                      value.countryList["data"]![index].name
+                                          .official,
+                                      maxLines: 2,
+                                      style: TextStyle(
+                                        fontSize: ScreenUtil().setSp(45),
+                                        color: Constants.tileColor,
+                                      ),
+                                    ),
+                                    subtitle: Text(
+                                      "Commonly: " +
+                                          value.countryList["data"]![index].name
+                                              .common,
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                        fontSize: ScreenUtil().setSp(35),
+                                        color: Constants.tileColor,
+                                      ),
+                                    ),
+                                    leading: Image.network(
+                                      value.countryList["data"]![index].flags
+                                          .png,
+                                      height: ScreenUtil().setHeight(100),
+                                      width: ScreenUtil().setHeight(100),
+                                      loadingBuilder: (BuildContext context,
+                                          Widget child,
+                                          ImageChunkEvent? loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        }
+                                        return SizedBox(
+                                          width: ScreenUtil().setHeight(100),
+                                          height: ScreenUtil().setHeight(100),
+                                          child: Center(
+                                            child: CircularProgressIndicator(
+                                              color: Colors.grey,
+                                              value: loadingProgress
+                                                          .expectedTotalBytes !=
+                                                      null
+                                                  ? loadingProgress
+                                                          .cumulativeBytesLoaded /
+                                                      loadingProgress
+                                                          .expectedTotalBytes!
+                                                  : null,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          itemCount: (value.countriesList == null)
+                              ? 0
+                              : value.countriesList!.length,
+                        ),
+                      )
+                    ],
+                  ),
                 )
               : (search == "" && value.countryDataList == null)
                   ? SizedBox(

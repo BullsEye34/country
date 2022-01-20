@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:country/shared_preferences/sharedPrefs.dart';
 import 'package:country/transactions/models/countriesModel.dart';
 import 'package:country/transactions/models/countryDataModel.dart';
 import 'package:country/transactions/service/service.dart';
@@ -18,7 +19,7 @@ class States extends ChangeNotifier {
   List<CountryDataModel>? countryDataList = null;
 
   void getCountriedByRegion(String region) {
-    Service.getCountriesByRegion(region).then((response) {
+    Service.getCountriesByRegion(region).then((response) async {
       var o = response;
       if (response.statusCode == 200) {
         o = o.body.toString();
@@ -28,6 +29,8 @@ class States extends ChangeNotifier {
         countryList["success"] = true;
         countryList["error"] = false;
         countryList["data"] = countriesList;
+
+        await MySharedPreferences().setCountries(o!);
       } else if (response.statusCode == 404) {
         countryList["success"] = false;
         countryList["error"] = true;
@@ -36,6 +39,10 @@ class States extends ChangeNotifier {
         countryList["success"] = false;
         countryList["error"] = true;
         countryList["errorMessage"] = "502";
+        countriesList = List<CountriesModel>.from(json
+            .decode((await MySharedPreferences().getCountries()).toString())
+            .map((model) => CountriesModel.fromMap(model)));
+        countryList["data"] = countriesList;
       }
 
       notifyListeners();
