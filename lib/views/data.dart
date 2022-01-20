@@ -51,17 +51,21 @@ class Data extends StatelessWidget {
                       data("Capital Of Country:",
                           value.countryDataModel!.capital[0]),
                       size50(),
-                      data("Currency Name:",
-                          value.countryDataModel!.currencies.inr.name),
+                      data(
+                          "Currency Name:",
+                          value.countryDataModel!.currencies.values.toList()[0]
+                              ["name"]),
                       size50(),
                       data("Country Population:",
                           value.countryDataModel!.population),
                       size50(),
                       data(
                           "Currency Denonym:",
-                          value.countryDataModel!.demonyms.eng.m +
+                          value.countryDataModel!.demonyms.values.toList()[0]
+                                  ["m"] +
                               " & " +
-                              value.countryDataModel!.demonyms.eng.f),
+                              value.countryDataModel!.demonyms.values
+                                  .toList()[0]["f"]),
                       size200(),
                       Text(
                         "Denonym is for Male & Female",
@@ -121,30 +125,36 @@ class Data extends StatelessWidget {
     );
   }
 
-  Row data(title, data) => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Center(
-            child: Text(
-              title,
-              style: TextStyle(
-                fontSize: ScreenUtil().setSp(
-                  45,
+  Container data(title, data) => Container(
+        width: ScreenUtil().setWidth(500),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Center(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: ScreenUtil().setSp(
+                    45,
+                  ),
                 ),
               ),
             ),
-          ),
-          Center(
-            child: Text(
-              data.toString(),
-              style: TextStyle(
-                fontSize: ScreenUtil().setSp(
-                  60,
+            Center(
+              child: Container(
+                width: ScreenUtil().setWidth(400),
+                child: Text(
+                  data.toString(),
+                  style: TextStyle(
+                    fontSize: ScreenUtil().setSp(
+                      50,
+                    ),
+                    fontFamily: 'Roboto',
+                  ),
                 ),
-                fontFamily: 'Roboto',
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       );
 }
