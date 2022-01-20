@@ -19,7 +19,7 @@ class Countries extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new),
+          icon: const Icon(Icons.arrow_back_ios_new),
           onPressed: () {
             provider.clearDataCountries();
             Navigator.pop(context);
@@ -99,10 +99,10 @@ class Countries extends StatelessWidget {
           ? const Center(
               child: CupertinoActivityIndicator(),
             )
-          : Container(
+          : SizedBox(
               height: ScreenUtil().setHeight(1100),
               child: ListView.builder(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) => Container(
                   margin: EdgeInsets.symmetric(
                     vertical: ScreenUtil().setHeight(20),
@@ -144,7 +144,7 @@ class Countries extends StatelessWidget {
                             if (loadingProgress == null) {
                               return child;
                             }
-                            return Container(
+                            return SizedBox(
                               width: ScreenUtil().setHeight(100),
                               height: ScreenUtil().setHeight(100),
                               child: Center(
