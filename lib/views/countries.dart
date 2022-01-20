@@ -49,19 +49,22 @@ class Countries extends StatelessWidget {
             heading(provider, context),
             size200(),
             Consumer<States>(builder: (context, value, child) {
-              return TextField(
-                controller: controller,
-                decoration: InputDecoration(
-                  hintText: 'Search',
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                onSubmitted: (search) {
-                  value.getCountriesBySearch(search.toString());
-                },
-              );
+              return (value.countryList["error"] == true &&
+                      value.countryList["errorMessage"] == "502")
+                  ? Container()
+                  : TextField(
+                      controller: controller,
+                      decoration: InputDecoration(
+                        hintText: 'Search',
+                        prefixIcon: Icon(Icons.search),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onSubmitted: (search) {
+                        value.getCountriesBySearch(search.toString());
+                      },
+                    );
             }),
             size50(),
             listOfCountries(controller.text),
@@ -150,16 +153,22 @@ class Countries extends StatelessWidget {
                         child: ListView.builder(
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) => GestureDetector(
-                            onTap: () => Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (context) => Data(
-                                  value.countryList["data"]![index].name
-                                      .official,
-                                  color,
-                                ),
-                              ),
-                            ),
+                            onTap: () => showCupertinoDialog(
+                                context: context,
+                                builder: (context) => CupertinoAlertDialog(
+                                      title: const Text("No Internet"),
+                                      content: const Text(
+                                          "Please check your internet connection"),
+                                      actions: [
+                                        CupertinoDialogAction(
+                                            child: const Text("Ok"),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              Navigator.pop(context);
+                                            },
+                                            isDefaultAction: true)
+                                      ],
+                                    )),
                             child: Container(
                               margin: EdgeInsets.symmetric(
                                 vertical: ScreenUtil().setHeight(20),
