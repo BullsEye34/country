@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:country/transactions/endpoints/endpoints.dart';
 import 'package:http/http.dart' as http;
 
@@ -10,7 +12,11 @@ class Service {
     return await client
         .get(Uri.parse(url + "/region/" + region + "?fields=name,flags"))
         .timeout(Duration(seconds: timeoutTime))
-        .onError((error, stackTrace) => Future(() => throw error!));
+        .catchError((error) {
+      return http.Response(error.toString(), HttpStatus.badGateway);
+    }).onError((error, stackTrace) {
+      return http.Response(error.toString(), HttpStatus.badGateway);
+    });
   }
 
   static Future getDataByCountry(country) async {
@@ -21,7 +27,11 @@ class Service {
             country +
             "?fields=name,flags,currencies,capital,population,cca2,demonyms"))
         .timeout(Duration(seconds: timeoutTime))
-        .onError((error, stackTrace) => Future(() => throw error!));
+        .catchError((error) {
+      return http.Response(error.toString(), HttpStatus.badGateway);
+    }).onError((error, stackTrace) {
+      return http.Response(error.toString(), HttpStatus.badGateway);
+    });
   }
 
   static Future getCountriesBySearch(country) async {
@@ -32,6 +42,10 @@ class Service {
             country +
             "?fields=name,flags,currencies,capital,population,cca2,demonyms"))
         .timeout(Duration(seconds: timeoutTime))
-        .onError((error, stackTrace) => Future(() => throw error!));
+        .catchError((error) {
+      return http.Response(error.toString(), HttpStatus.badGateway);
+    }).onError((error, stackTrace) {
+      return http.Response(error.toString(), HttpStatus.badGateway);
+    });
   }
 }
