@@ -148,6 +148,7 @@ class Data extends StatelessWidget {
                 width: ScreenUtil().setWidth(400),
                 child: Text(
                   data.toString(),
+                  textAlign: TextAlign.end,
                   style: TextStyle(
                     fontSize: ScreenUtil().setSp(
                       50,
