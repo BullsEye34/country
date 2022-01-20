@@ -9,6 +9,7 @@ class States extends ChangeNotifier {
   CountriesModel? _countriesModel;
   CountryDataModel? countryDataModel = null;
   List<CountriesModel>? countriesList = null;
+  List<CountryDataModel>? countryDataList = null;
 
   void getCountriedByRegion(String region) {
     Service.getCountriesByRegion(region).then((response) {
@@ -29,8 +30,23 @@ class States extends ChangeNotifier {
     });
   }
 
+  void getCountriesBySearch(String search) {
+    Service.getCountriesBySearch(search).then((response) {
+      var o = response;
+      o = o.body.toString();
+      countryDataList = List<CountryDataModel>.from(
+          json.decode(o).map((model) => CountryDataModel.fromMap(model)));
+      notifyListeners();
+    });
+  }
+
   void clearDataCountries() {
     countriesList = null;
+    notifyListeners();
+  }
+
+  void clearSearchData() {
+    countryDataList = null;
     notifyListeners();
   }
 

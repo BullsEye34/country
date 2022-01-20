@@ -15,6 +15,7 @@ class Countries extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController controller = TextEditingController();
     States provider = Provider.of<States>(context, listen: false);
     provider.getCountriedByRegion(title!);
     return Scaffold(
@@ -22,6 +23,7 @@ class Countries extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new),
           onPressed: () {
+            provider.clearSearchData();
             provider.clearDataCountries();
             Navigator.pop(context);
           },
@@ -43,46 +45,67 @@ class Countries extends StatelessWidget {
         child: ListView(
           children: [
             size200(),
-            Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    provider.clearDataCountries();
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    title.toString(),
-                    style: TextStyle(
-                      fontSize: ScreenUtil().setSp(60),
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: ScreenUtil().setWidth(20),
-                ),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  color: Colors.grey,
-                  size: ScreenUtil().setSp(50),
-                ),
-                SizedBox(
-                  width: ScreenUtil().setWidth(20),
-                ),
-                Text(
-                  "Countries",
-                  style: TextStyle(
-                    fontSize: ScreenUtil().setSp(100),
-                    color: Constants.headingColor,
-                  ),
-                ),
-              ],
-            ),
+            heading(provider, context),
             size200(),
-            listOfCountries(),
+            Consumer<States>(builder: (context, value, child) {
+              return TextField(
+                controller: controller,
+                decoration: InputDecoration(
+                  hintText: 'Search',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onSubmitted: (search) {
+                  value.getCountriesBySearch(search.toString());
+                },
+              );
+            }),
+            size50(),
+            listOfCountries(controller.text),
           ],
         ),
       ),
+    );
+  }
+
+  Row heading(States provider, BuildContext context) {
+    return Row(
+      children: [
+        GestureDetector(
+          onTap: () {
+            provider.clearSearchData();
+            provider.clearDataCountries();
+            Navigator.pop(context);
+          },
+          child: Text(
+            title.toString(),
+            style: TextStyle(
+              fontSize: ScreenUtil().setSp(60),
+              color: Colors.grey,
+            ),
+          ),
+        ),
+        SizedBox(
+          width: ScreenUtil().setWidth(20),
+        ),
+        Icon(
+          Icons.arrow_forward_ios,
+          color: Colors.grey,
+          size: ScreenUtil().setSp(50),
+        ),
+        SizedBox(
+          width: ScreenUtil().setWidth(20),
+        ),
+        Text(
+          "Countries",
+          style: TextStyle(
+            fontSize: ScreenUtil().setSp(100),
+            color: Constants.headingColor,
+          ),
+        ),
+      ],
     );
   }
 
@@ -94,94 +117,193 @@ class Countries extends StatelessWidget {
     );
   }
 
-  Consumer<States> listOfCountries() {
+  SizedBox size50() {
+    return SizedBox(
+      height: ScreenUtil().setHeight(
+        50,
+      ),
+    );
+  }
+
+  Consumer<States> listOfCountries(search) {
     return Consumer<States>(
       builder: (context, value, child) => (value.countriesList == null)
           ? const Center(
               child: CupertinoActivityIndicator(),
             )
-          : SizedBox(
-              height: ScreenUtil().setHeight(1100),
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (context, index) => GestureDetector(
-                  onTap: () => Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                      builder: (context) => Data(
-                        value.countriesList![index].name.official,
-                        color,
+          : (search == "" && value.countryDataList == null)
+              ? SizedBox(
+                  height: ScreenUtil().setHeight(1100),
+                  child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    itemBuilder: (context, index) => GestureDetector(
+                      onTap: () => Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => Data(
+                            value.countriesList![index].name.official,
+                            color,
+                          ),
+                        ),
+                      ),
+                      child: Container(
+                        margin: EdgeInsets.symmetric(
+                          vertical: ScreenUtil().setHeight(20),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: ScreenUtil().setHeight(20),
+                        ),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: color),
+                        height: ScreenUtil().setHeight(200),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ListTile(
+                              title: Text(
+                                value.countriesList![index].name.official,
+                                maxLines: 2,
+                                style: TextStyle(
+                                  fontSize: ScreenUtil().setSp(45),
+                                  color: Constants.tileColor,
+                                ),
+                              ),
+                              subtitle: Text(
+                                "Commonly: " +
+                                    value.countriesList![index].name.common,
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontSize: ScreenUtil().setSp(35),
+                                  color: Constants.tileColor,
+                                ),
+                              ),
+                              leading: Image.network(
+                                value.countriesList![index].flags.png,
+                                height: ScreenUtil().setHeight(100),
+                                width: ScreenUtil().setHeight(100),
+                                loadingBuilder: (BuildContext context,
+                                    Widget child,
+                                    ImageChunkEvent? loadingProgress) {
+                                  if (loadingProgress == null) {
+                                    return child;
+                                  }
+                                  return SizedBox(
+                                    width: ScreenUtil().setHeight(100),
+                                    height: ScreenUtil().setHeight(100),
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        color: Colors.grey,
+                                        value: loadingProgress
+                                                    .expectedTotalBytes !=
+                                                null
+                                            ? loadingProgress
+                                                    .cumulativeBytesLoaded /
+                                                loadingProgress
+                                                    .expectedTotalBytes!
+                                            : null,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
+                    itemCount: (value.countriesList == null)
+                        ? 0
+                        : value.countriesList!.length,
                   ),
-                  child: Container(
-                    margin: EdgeInsets.symmetric(
-                      vertical: ScreenUtil().setHeight(20),
-                    ),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: ScreenUtil().setHeight(20),
-                    ),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20), color: color),
-                    height: ScreenUtil().setHeight(200),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ListTile(
-                          title: Text(
-                            value.countriesList![index].name.official,
-                            maxLines: 2,
-                            style: TextStyle(
-                              fontSize: ScreenUtil().setSp(45),
-                              color: Constants.tileColor,
-                            ),
+                )
+              : SizedBox(
+                  height: ScreenUtil().setHeight(1100),
+                  child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    itemBuilder: (context, index) => GestureDetector(
+                      onTap: () => Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => Data(
+                            value.countryDataList![index].name.official,
+                            color,
                           ),
-                          subtitle: Text(
-                            "Commonly: " +
-                                value.countriesList![index].name.common,
-                            maxLines: 1,
-                            style: TextStyle(
-                              fontSize: ScreenUtil().setSp(35),
-                              color: Constants.tileColor,
-                            ),
-                          ),
-                          leading: Image.network(
-                            value.countriesList![index].flags.png,
-                            height: ScreenUtil().setHeight(100),
-                            width: ScreenUtil().setHeight(100),
-                            loadingBuilder: (BuildContext context, Widget child,
-                                ImageChunkEvent? loadingProgress) {
-                              if (loadingProgress == null) {
-                                return child;
-                              }
-                              return SizedBox(
-                                width: ScreenUtil().setHeight(100),
-                                height: ScreenUtil().setHeight(100),
-                                child: Center(
-                                  child: CircularProgressIndicator(
-                                    color: Colors.grey,
-                                    value: loadingProgress.expectedTotalBytes !=
-                                            null
-                                        ? loadingProgress
-                                                .cumulativeBytesLoaded /
-                                            loadingProgress.expectedTotalBytes!
-                                        : null,
-                                  ),
+                        ),
+                      ),
+                      child: Container(
+                        margin: EdgeInsets.symmetric(
+                          vertical: ScreenUtil().setHeight(20),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: ScreenUtil().setHeight(20),
+                        ),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: color),
+                        height: ScreenUtil().setHeight(200),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ListTile(
+                              title: Text(
+                                value.countryDataList![index].name.official,
+                                maxLines: 2,
+                                style: TextStyle(
+                                  fontSize: ScreenUtil().setSp(45),
+                                  color: Constants.tileColor,
                                 ),
-                              );
-                            },
-                          ),
-                        )
-                      ],
+                              ),
+                              subtitle: Text(
+                                "Commonly: " +
+                                    value.countryDataList![index].name.common,
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontSize: ScreenUtil().setSp(35),
+                                  color: Constants.tileColor,
+                                ),
+                              ),
+                              leading: Image.network(
+                                value.countryDataList![index].flags.png,
+                                height: ScreenUtil().setHeight(100),
+                                width: ScreenUtil().setHeight(100),
+                                loadingBuilder: (BuildContext context,
+                                    Widget child,
+                                    ImageChunkEvent? loadingProgress) {
+                                  if (loadingProgress == null) {
+                                    return child;
+                                  }
+                                  return SizedBox(
+                                    width: ScreenUtil().setHeight(100),
+                                    height: ScreenUtil().setHeight(100),
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        color: Colors.grey,
+                                        value: loadingProgress
+                                                    .expectedTotalBytes !=
+                                                null
+                                            ? loadingProgress
+                                                    .cumulativeBytesLoaded /
+                                                loadingProgress
+                                                    .expectedTotalBytes!
+                                            : null,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
                     ),
+                    itemCount: (value.countryDataList == null)
+                        ? 0
+                        : value.countryDataList!.length,
                   ),
                 ),
-                itemCount: (value.countriesList == null)
-                    ? 0
-                    : value.countriesList!.length,
-              ),
-            ),
     );
   }
 }
