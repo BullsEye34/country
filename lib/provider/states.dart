@@ -6,7 +6,7 @@ import 'package:country/transactions/service/service.dart';
 import 'package:flutter/cupertino.dart';
 
 class States extends ChangeNotifier {
-  CountriesModel? _countriesModel;
+  CountriesModel? _countriesModel = null;
   CountryDataModel? countryDataModel = null;
   List<CountriesModel>? countriesList = null;
   List<CountryDataModel>? countryDataList = null;
