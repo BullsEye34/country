@@ -43,6 +43,7 @@ class Countries extends StatelessWidget {
           horizontal: ScreenUtil().setWidth(80),
         ),
         child: ListView(
+          physics: NeverScrollableScrollPhysics(),
           children: [
             size200(),
             heading(provider, context),
