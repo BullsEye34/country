@@ -48,8 +48,11 @@ class Data extends StatelessWidget {
                       size50(),
                       data("Country Code:", value.countryDataModel!.cca2),
                       size50(),
-                      data("Capital Of Country:",
-                          value.countryDataModel!.capital[0]),
+                      data(
+                          "Capital Of Country:",
+                          (value.countryDataModel!.capital.isEmpty)
+                              ? "N/A"
+                              : value.countryDataModel!.capital[0]),
                       size50(),
                       data(
                           "Currency Name:",
