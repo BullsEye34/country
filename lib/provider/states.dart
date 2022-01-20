@@ -7,9 +7,12 @@ import 'package:country/transactions/service/service.dart';
 import 'package:flutter/cupertino.dart';
 
 class States extends ChangeNotifier {
+  /// Places where Data is stored
   CountriesModel? _countriesModel = null;
   CountryDataModel? countryDataModel = null;
   List<CountriesModel>? countriesList = null;
+
+  /// useful when error handling
   Map<String, dynamic> countryList = {
     "success": null,
     "error": null,
@@ -18,6 +21,7 @@ class States extends ChangeNotifier {
   };
   List<CountryDataModel>? countryDataList = null;
 
+  /// getter
   void getCountriedByRegion(String region) {
     Service.getCountriesByRegion(region).then((response) async {
       var o = response;
@@ -49,6 +53,7 @@ class States extends ChangeNotifier {
     });
   }
 
+  /// getter
   void getCountryData(String country) {
     Service.getDataByCountry(country).then((response) {
       var o = response;
@@ -58,6 +63,7 @@ class States extends ChangeNotifier {
     });
   }
 
+  /// getter
   void getCountriesBySearch(String search) {
     Service.getCountriesBySearch(search).then((response) {
       var o = response;
@@ -84,18 +90,21 @@ class States extends ChangeNotifier {
     });
   }
 
+  /// clear Data
   void clearDataCountries() {
     countriesList = null;
     countryList["data"] = [];
     notifyListeners();
   }
 
+  /// clear Data
   void clearSearchData() {
     countryDataList = null;
     countryList["data"] = [];
     notifyListeners();
   }
 
+  /// clear Data
   void clearDataCountryData() {
     countryDataModel = null;
     notifyListeners();

@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+/// This class is to display the Country Data
 class Data extends StatelessWidget {
   final String? country;
   final Color? color;
-  Data(this.country, this.color, {Key? key});
+  const Data(this.country, this.color, {Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,60 +28,58 @@ class Data extends StatelessWidget {
         backgroundColor: color,
         elevation: 0,
       ),
-      body: Container(
-        child: Consumer<States>(
-          builder: (context, value, child) => (value.countryDataModel == null)
-              ? const Center(child: CupertinoActivityIndicator())
-              : Container(
-                  height: ScreenUtil().setHeight(1700),
-                  margin: EdgeInsets.symmetric(
-                    horizontal: ScreenUtil().setWidth(100),
-                  ),
-                  child: ListView(
-                    physics: const BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    children: [
-                      size200(),
-                      flag(value),
-                      size200(),
-                      data("Commonly Called:",
-                          value.countryDataModel!.name.common),
-                      size50(),
-                      data("Country Code:", value.countryDataModel!.cca2),
-                      size50(),
-                      data(
-                          "Capital Of Country:",
-                          (value.countryDataModel!.capital.isEmpty)
-                              ? "N/A"
-                              : value.countryDataModel!.capital[0]),
-                      size50(),
-                      data(
-                          "Currency Name:",
-                          value.countryDataModel!.currencies.values.toList()[0]
-                              ["name"]),
-                      size50(),
-                      data("Country Population:",
-                          value.countryDataModel!.population),
-                      size50(),
-                      data(
-                          "Currency Denonym:",
-                          value.countryDataModel!.demonyms.values.toList()[0]
-                                  ["m"] +
-                              " & " +
-                              value.countryDataModel!.demonyms.values
-                                  .toList()[0]["f"]),
-                      size200(),
-                      Text(
-                        "Denonym is for Male & Female",
-                        style: TextStyle(
-                          fontSize: ScreenUtil().setSp(40),
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
+      body: Consumer<States>(
+        builder: (context, value, child) => (value.countryDataModel == null)
+            ? const Center(child: CupertinoActivityIndicator())
+            : Container(
+                height: ScreenUtil().setHeight(1700),
+                margin: EdgeInsets.symmetric(
+                  horizontal: ScreenUtil().setWidth(100),
                 ),
-        ),
+                child: ListView(
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  children: [
+                    size200(),
+                    flag(value),
+                    size200(),
+                    data("Commonly Called:",
+                        value.countryDataModel!.name.common),
+                    size50(),
+                    data("Country Code:", value.countryDataModel!.cca2),
+                    size50(),
+                    data(
+                        "Capital Of Country:",
+                        (value.countryDataModel!.capital.isEmpty)
+                            ? "N/A"
+                            : value.countryDataModel!.capital[0]),
+                    size50(),
+                    data(
+                        "Currency Name:",
+                        value.countryDataModel!.currencies.values.toList()[0]
+                            ["name"]),
+                    size50(),
+                    data("Country Population:",
+                        value.countryDataModel!.population),
+                    size50(),
+                    data(
+                        "Currency Denonym:",
+                        value.countryDataModel!.demonyms.values.toList()[0]
+                                ["m"] +
+                            " & " +
+                            value.countryDataModel!.demonyms.values.toList()[0]
+                                ["f"]),
+                    size200(),
+                    Text(
+                      "Denonym is for Male & Female",
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(40),
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
       ),
     );
   }
@@ -128,7 +127,7 @@ class Data extends StatelessWidget {
     );
   }
 
-  Container data(title, data) => Container(
+  SizedBox data(title, data) => SizedBox(
         width: ScreenUtil().setWidth(500),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -144,7 +143,7 @@ class Data extends StatelessWidget {
               ),
             ),
             Center(
-              child: Container(
+              child: SizedBox(
                 width: ScreenUtil().setWidth(400),
                 child: Text(
                   data.toString(),

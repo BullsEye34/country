@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+/// This Class uses a constant to get the regions of the world
 class Regions extends StatelessWidget {
   const Regions({Key? key}) : super(key: key);
 
@@ -14,7 +15,6 @@ class Regions extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.symmetric(
             horizontal: ScreenUtil().setWidth(80),
-            //vertical: ScreenUtil().setHeight(100),
           ),
           height: ScreenUtil().setHeight(1900),
           child: ListView(
@@ -46,8 +46,8 @@ class Regions extends StatelessWidget {
     );
   }
 
-  Container regionList() {
-    return Container(
+  SizedBox regionList() {
+    return SizedBox(
       height: ScreenUtil().setHeight(1200),
       child: ListView.builder(
         physics: const BouncingScrollPhysics(),

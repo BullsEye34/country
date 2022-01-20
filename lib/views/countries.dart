@@ -6,9 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+/// This class is for the country list
 class Countries extends StatelessWidget {
-  //const Countries({Key? key}) : super(key: key);
-
   final Color? color;
   final String? title;
   const Countries(this.title, this.color, {Key? key});
@@ -43,11 +42,13 @@ class Countries extends StatelessWidget {
           horizontal: ScreenUtil().setWidth(80),
         ),
         child: ListView(
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           children: [
             size200(),
             heading(provider, context),
             size200(),
+
+            /// Used a consumer for state management and Error handling
             Consumer<States>(builder: (context, value, child) {
               return (value.countryList["error"] == true &&
                       value.countryList["errorMessage"] == "502")
@@ -56,7 +57,7 @@ class Countries extends StatelessWidget {
                       controller: controller,
                       decoration: InputDecoration(
                         hintText: 'Search',
-                        prefixIcon: Icon(Icons.search),
+                        prefixIcon: const Icon(Icons.search),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -131,6 +132,7 @@ class Countries extends StatelessWidget {
 
   Consumer<States> listOfCountries(search) {
     return Consumer<States>(
+      /// Error Handled Thrice
       builder: (context, value, child) => (value.countryList["data"].isEmpty)
           ? const Center(
               child: CupertinoActivityIndicator(),

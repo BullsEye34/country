@@ -7,6 +7,7 @@ class Service {
   static var client = http.Client();
   static var timeoutTime = 10;
 
+  /// Get request
   static Future getCountriesByRegion(region) async {
     var url = EndPoints.baseURL;
     return await client
@@ -19,6 +20,7 @@ class Service {
     });
   }
 
+  /// Get request
   static Future getDataByCountry(country) async {
     var url = EndPoints.baseURL;
     return await client
@@ -34,6 +36,7 @@ class Service {
     });
   }
 
+  /// Get request
   static Future getCountriesBySearch(country) async {
     var url = EndPoints.baseURL;
     return await client
