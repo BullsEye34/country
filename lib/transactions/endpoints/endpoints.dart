@@ -1,3 +1,3 @@
 class EndPoints {
-  static String baseURL = "https://restcountries.com/v3.1/";
+  static String baseURL = "https://restcountries.com/v3.1";
 }
